@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require("express")
+const app = express()
 const mongoose = require("mongoose")
 const passport = require("passport")
 const flash = require("express-flash")
@@ -12,7 +13,9 @@ const {
   checkNotAuthenticated,
 } = require("./middleware/auth")
 
-const app = express()
+
+
+const port = 5000
 
 const initializePassport = require("./passport-config")
 initializePassport(
@@ -94,12 +97,14 @@ app.delete("/logout", (req, res) => {
 });
 
 mongoose
-  .connect("mongodb://localhost:27017/auth", {
+  .connect("mongodb+srv://genki:genki1234@cluster0.7xjyv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
-  .then(() => {
-    app.listen(3000, () => {
-      console.log("Server is running on Port 3000")
-    })
-  })
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'DB connection error:'));
+db.once('open', () => console.log('DB connection successful'));
+
+app.listen(port, () => console.log(`Express Server listening on port ${port}!`));
