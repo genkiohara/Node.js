@@ -97,10 +97,12 @@ app.delete("/logout", (req, res) => {
 });
 
 mongoose
-  .connect("mongodb+srv://genki:genki1234@cluster0.7xjyv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+  .connect(
+    process.env.MONGODB_URI || 'mongodb：// localhost：27017 / Cluster0', 
+  {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-  })
+  },)
 
 const db = mongoose.connection;
 
